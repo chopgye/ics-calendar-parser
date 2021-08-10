@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="grey lighten-2">
+  <head>
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAEACABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAABfX18AAAAAAPLy8gAvMJQAPT09AOLi4gC3t7cAKCmNAPT09ABqamoAJieKAKenpwB8fHwA5OTkAMLCwgD29vYAKixrAMvLywBgX8MAKCmMAN3d3QCHh4cA5ubmAC4vlADv7+8AYWHFACsrjgDf398A8fHxAC4vkwD6+voAz8/PAHl5eQAsLZAA4eHhAGFhxAAqK40AyMjIAC8xlQBycnIAJiaJAOzs7ADBwcEA9fX1AMrKygB0dHQA09PTACcoiwC6uroAw8PDAPf39wBtbW0AYGDEAHZ2dgApKo0A5+fnAPDw8AAtLpIA+fn5AM7OzgCjo6MAKyyPANfX1wCBgYEAioqKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANTU1NTU1NTU1NTU1NTU1ATUrKysrKysCAisrKysrNQE1KykWFUA3AgIJCT8FKzUBNSsYLTwLJwICMQkGDSs1ATUrOBsUJTMCAiIABgIrNQE1KwIcHy07AgIiCSwCKzUBNSsrDg4qJwICFAkRAis1ATUrDwwODgwCAgwMLgIrNQE1Kw8MDCAMAgICDC4CKzUBNSs6Mg8rCAICHDgYAis1ATUrHjoyDysICAIcOBgrNQEQHR05IT0aJCQ2Ey8KKBABEAMDHRkZIzQ0NBI2Ey8QARAmJgMXHTkhIT0aJDYHEAEQEDAEEBAQEBAQEDAEEBABAQE+NQEBAQEBAQE+NQEBAQABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAM/nAAA=" rel="icon" type="image/x-icon" />
+    <meta name="description" content="Assignment 3 for CIS2750">
+    <meta name="keywords" content="calendar,ics,format,parser">
+    <meta name="author" content="Dorjee Tenzin">
+    <title>Assignment 3</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body style>
+    <!-- Navbar -->
+    <ul id='dbdropdown' class='dropdown-content'>
+      <li><a id="btnLogin">Connect</a></li>
+    </ul>
+    <nav class="grey darken-2">
+      <div class="nav-wrapper container">
+        <a href="#" class="brand-logo center">iCalendar</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+          <li><a class='dropdown-trigger btn grey darken-2' href='#' data-target='dbdropdown'>DB Tools</a></li>
+        </ul>
+        <div id="loginDialog"></div>
+      </div>
+    </nav>
+
+    <div id="login_form" class="row" style="display:none">
+      <div class="row"></div>
+      <form class="col s12" id="connectform">
+        <div class="input-field col s4">
+          <i class="material-icons prefix">account_circle</i>
+          <input placeholder="MightyDuck123" id="login_username" type="text" class="validate">
+          <label for="login_username">Username</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">lock</i>
+          <input placeholder="***********" id="login_password" type="password" class="validate">
+          <label for="login_password">Password</label>
+        </div>
+        <div class="input-field col s4">
+            <i class="material-icons prefix">cloud_circle</i>
+          <input placeholder="Cool DB 1" id="login_dbname" type="text" class="validate">
+          <label for="login_dbname">Datebase Name</label>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col s12 center-align">
+          <button id="btnConnect" class="btn-flat">Connect</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="query_form" class="row" style="display: none">
+      <div class="col s12">
+        <div class="card">
+          <div class="card-content">
+            <!--div  class="row left-align">
+              <h6>Query Panel</h6>
+              <p>Here, you are able to send queries to the database to further inspect the files.</p>
+            </div-->
+            <div class="row">
+              <div class="center-align">
+                <h6>Query Panel</h6>
+              </div>
+              <div class="col s12" id="query_output">
+                <label for="query_textarea">Query Output</label>
+                <textarea readonly id="query_textarea" class="materialize-textarea"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="card-action">
+            <div class="row">
+              <div class="col s2">
+                <h6>Events by <b>Start Date</b></p>
+              </div>
+              <div class="col s2">
+                  <label for="query_file">All Events From File</label>  
+                  <input id="query_file" type="text" placeholder="filename.ics">
+              </div>
+              <div class="col s2">
+                <h6><b>Conflicting</b> Events</h6>
+              </div>
+              <div class="col s2">
+                <h6>Events with <b>Alarms</b></p>
+              </div>
+              <div class="col s2">
+                  <h6>Alarms with <b>Parent Files</b></p>
+              </div>
+              <div class="col s2">
+                <label for="query_organizer">Events by Organizer</label>
+                <input id="query_organizer" type="text" placeholder="Dave">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s2"><button class="btn grey darken-2" onclick="run_query(1);">Run</button></div>
+              <div class="col s2"><button class="btn grey darken-2" onclick="run_query(2);">Run</button></div>
+              <div class="col s2"><button class="btn grey darken-2" onclick="run_query(3);">Run</button></div>
+              <div class="col s2"><button class="btn grey darken-2" onclick="run_query(4);">Run</button></div>
+              <div class="col s2"><button class="btn grey darken-2" onclick="run_query(5);">Run</button></div>
+              <div class="col s2"><button class="btn grey darken-2" onclick="run_query(6);">Run</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- File Log Panel -->
+    <div id="filelogpanel" class="row">
+      <div class="col l9 s12">
+        <div id="fileLog" class="center-align">
+          <div class="card">
+            <div class="card-content">
+              <h6>File Log</h6>
+              <span id="statusMessage"></span>
+              <table>
+                <thead><tr><th>File Name</th><th>Version</th><th>Product ID</th><th># Events</th><th># Properties</th></tr></thead>
+                <tbody id="filelogbody">
+                </tbody>
+              </table>
+            </div>
+            <div class="card-action grey lighten-4">
+              <form id="fileForm" enctype="multipart/form-data">
+                <div class="file-field input-field">
+                  <div class="btn grey darken-2">
+                    <span>Upload .ICS File</span>
+                    <input type="file" id="btnFile" name="file" accept=".ics" />
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col l3 s12">
+        <div class="card" id="statuspanel">
+          <div id="status" class="card-content green lighten-3">
+            <h6>Status Panel</h6>
+          </div>
+          <div class="card-action">
+            <ul id="errorList" class="collection">
+            </ul>
+            <div class="center-align">
+              <input id="btnClear" type="button" class="btn-flat" value="Clear" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--Cal View -->
+    <div class="row">
+      <div class="col s12">
+        <div class="card">
+          <div class="card-content">
+              <h6 class="center-align">Calendar View Panel</h6>
+              <div class="center-align">
+                <p>You may click on the Props/Alarms buttons to display them :) and <b><u>click</u></b> on the "Start Date" and "Start Time"  to activate their respective pickers!</p>
+              </div>
+              <label>Select a file to view all its' components: </label>
+              <select class="browser-default" id="caldropdown" >
+              </select>
+           </div>
+          <div id="calview" class="card-action">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="row">
+      <div class="col s12">
+        <div class="card">
+          <div class="card-content center-align">
+            <h6>Create new Calendar!</h6>
+            <p>Make sure to check the status panel for any errors after you hit "Create Calendar", and <b><u>click</u></b> on the "Start Date" and "Start Time"  to activate their respective pickers!</p>
+          </div>
+          <div class="card-action">
+            <div class="row">
+              <form class="col s12">
+                <div class="input-field col s4">
+                  <input placeholder="newCalendar" id="new_name" type="text" class="validate">
+                  <label for="new_name">Calendar Name</label>
+                </div>
+                <div class="input-field col s4">
+                  <input placeholder="2" id="new_version" type="number" class="validate" min="1">
+                  <label for="new_name">Version</label>
+                </div>
+                <div class="input-field col s4">
+                  <input placeholder="Calendar Maker 1.0 " id="new_prodid" type="text" class="validate" >
+                  <label for="new_prodid">Prod Id</label>
+                </div>
+              </form>
+            </div>
+            <div id="events">
+              <div class="event event_1 grey lighten-4 z-depth-1">
+                <div class="row">
+                  <div class="col s12 center-align">
+                    <h6>Event 1</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <form class="col s12">
+                      <div class="input-field col s8">
+                        <textarea id="event_1_uid" type="text" class="materialize-textarea"></textarea>
+                        <label for="event_1_uid">UID</label>
+                      </div>
+                      <div class="input-field col s2">
+                        <input type="text" id="event_1_dtstart_date" class="datepicker">
+                        <label for="event_1_dtstart_date">Start Date</label>
+                      </div>
+                      <div class="input-field col s2">
+                        <input type="text" id="event_1_dtstart_time" class="timepicker">
+                        <label for="event_1_dtstart_time">Start Time</label>
+                      </div>
+                  </form>
+                </div>
+                <div id="event_1_props"></div>
+                <div class="row">
+                  <div class="col s12 right-align">
+                    <button class="btn-flat" onclick="addprop('event_1_props', 1)">ADD PROP</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col s4 center-align">
+                <button id="createcalendar" class="btn grey darken-2">Create Calendar</button>
+              </div>
+              <div class="col s4 center-align">
+                <button id="addevent" class="btn grey darken-2">Add Event</button>
+              </div>
+              <div class="col s4 center-align">
+                <button id="clearcalendar" class="btn grey darken-2" onclick="clearCreateCalendar()">Clear Form</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/index.js"></script>
+  </body>
+  <footer class="page-footer grey lighten-2">
+    <div class="row center-align">
+      <div class="col s12">
+        <p class="grey-text">Crafted by Dorjee Tenzin with &hearts; in 2019</p>
+      </div>
+    </div>
+  </footer>
+</html>
